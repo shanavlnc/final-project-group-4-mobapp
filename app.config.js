@@ -13,7 +13,7 @@ module.exports = {
     },
     assetBundlePatterns: [
       '**/*'
-    ],
+    ],  
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.adoptpaw'

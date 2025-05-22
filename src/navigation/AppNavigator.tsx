@@ -11,6 +11,7 @@ import { theme } from '../constants/colors';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+// app navigator
 const AppNavigator = () => {
   const { user, isLoading } = useAuth();
 

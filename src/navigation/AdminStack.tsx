@@ -8,6 +8,7 @@ import ApplicationReviewScreen from '../screens/admin/ApplicationReviewScreen';
 
 const Stack = createNativeStackNavigator<AdminStackParamList>();
 
+// admin stack
 export const AdminStack = () => (
   <Stack.Navigator
     screenOptions={{

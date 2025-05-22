@@ -10,7 +10,7 @@ import AboutScreen from '../screens/user/AboutScreen';
 import PetDetailScreen from '../screens/user/PetDetailsScreen';
 import AdoptionFormScreen from '../screens/user/AdoptionFormScreen';
 import { Platform } from 'react-native';
-
+// user stack
 const Tab = createBottomTabNavigator<UserTabParamList>();
 const Stack = createStackNavigator<UserStackParamList>();
 

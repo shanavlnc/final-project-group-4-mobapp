@@ -8,7 +8,9 @@ import {
   Image,
   Text, 
   TouchableOpacity,
-  TextInput
+  TextInput,
+  ViewStyle,
+  TextStyle
 } from 'react-native';
 import { useApplication } from '../../context/ApplicationContext';
 import { PrimaryButton } from '../../components/buttons/PrimaryButton';
@@ -22,7 +24,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { Species, Gender, PetSize, Temperament } from '../../types';
+import { Species, Gender, PetSize, Temperament, Pet } from '../../types';
 
 interface PetFormData {
   id?: string;
@@ -34,7 +36,7 @@ interface PetFormData {
   size?: PetSize;
   temperament: Temperament[];
   description: string;
-  imageUrl: string | null;
+  imageUrl: string;
 }
 
 interface AddPetModalProps {
@@ -55,7 +57,7 @@ const AddPetModal: React.FC<AddPetModalProps> = ({ visible, onClose, petToEdit }
     size: undefined,
     temperament: [],
     description: '',
-    imageUrl: null,
+    imageUrl: '',
   });
   const [errors, setErrors] = useState<Partial<Record<keyof PetFormData, string>>>({});
 
@@ -67,7 +69,7 @@ const AddPetModal: React.FC<AddPetModalProps> = ({ visible, onClose, petToEdit }
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && result.assets[0]?.uri) {
       setFormData(prev => ({ ...prev, imageUrl: result.assets[0].uri }));
     }
   };
@@ -90,14 +92,12 @@ const AddPetModal: React.FC<AddPetModalProps> = ({ visible, onClose, petToEdit }
 
     setIsLoading(true);
     try {
-      const petData = {
+      const petData: Omit<Pet, 'id' | 'status' | 'createdAt'> = {
         ...formData,
         species: formData.species as Species,
         gender: formData.gender as Gender,
-        status: 'available' as const,
-        createdAt: new Date(),
         imageUrl: formData.imageUrl,
-      }; //
+      };
 
       if (petToEdit?.id) {
         await updatePet(petToEdit.id, petData);
@@ -142,7 +142,10 @@ const AddPetModal: React.FC<AddPetModalProps> = ({ visible, onClose, petToEdit }
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Pet Name *</Text>
               <TextInput
-                style={[styles.input, errors.name && styles.inputError]}
+                style={[
+                  styles.input,
+                  errors.name ? styles.inputError : null
+                ] as TextStyle}
                 value={formData.name}
                 onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
                 placeholder="Enter pet name"
@@ -152,7 +155,10 @@ const AddPetModal: React.FC<AddPetModalProps> = ({ visible, onClose, petToEdit }
 
             <View style={styles.pickerContainer}>
               <Text style={styles.label}>Species *</Text>
-              <View style={[styles.picker, errors.species && styles.inputError]}>
+              <View style={[
+                styles.picker,
+                errors.species ? styles.inputError : null
+              ] as ViewStyle}>
                 <Picker
                   selectedValue={formData.species}
                   onValueChange={(value) => setFormData(prev => ({ ...prev, species: value as Species }))}
@@ -179,7 +185,10 @@ const AddPetModal: React.FC<AddPetModalProps> = ({ visible, onClose, petToEdit }
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Age *</Text>
               <TextInput
-                style={[styles.input, errors.age && styles.inputError]}
+                style={[
+                  styles.input,
+                  errors.age ? styles.inputError : null
+                ] as TextStyle}
                 value={formData.age}
                 onChangeText={(text) => setFormData(prev => ({ ...prev, age: text }))}
                 placeholder="Enter age"
@@ -190,7 +199,10 @@ const AddPetModal: React.FC<AddPetModalProps> = ({ visible, onClose, petToEdit }
 
             <View style={styles.pickerContainer}>
               <Text style={styles.label}>Gender *</Text>
-              <View style={[styles.picker, errors.gender && styles.inputError]}>
+              <View style={[
+                styles.picker,
+                errors.gender ? styles.inputError : null
+              ] as ViewStyle}>
                 <Picker
                   selectedValue={formData.gender}
                   onValueChange={(value) => setFormData(prev => ({ ...prev, gender: value as Gender }))}

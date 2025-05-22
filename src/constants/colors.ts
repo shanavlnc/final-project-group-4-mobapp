@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-
+// theme
 export const theme = {
   // Core Colors
   primary: '#FF6B6B',       

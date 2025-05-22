@@ -21,7 +21,7 @@ interface PetCardProps {
   adminMode?: boolean;
   isAdopted?: boolean;
 }
-
+// pet card
 const PetCard: React.FC<PetCardProps> = ({ 
   pet, 
   onPress, 

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../constants/colors';
 
+// stat card
 interface StatCardProps {
   icon: keyof typeof Ionicons.glyphMap;
   value: number;

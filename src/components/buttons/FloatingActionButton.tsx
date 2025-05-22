@@ -3,6 +3,7 @@ import { TouchableOpacity, StyleSheet, ViewStyle, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../constants/colors';
 
+// floating action button
 interface FloatingActionButtonProps {
   icon: keyof typeof Ionicons.glyphMap;
   onPress: () => void;

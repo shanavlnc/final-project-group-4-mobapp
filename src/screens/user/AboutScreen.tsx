@@ -3,10 +3,11 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, Linking, Platform, View
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '../../constants/colors';
 
+// about screen
 const AboutScreen = () => {
-  const openLink = (url) => {
+  const openLink = (url: string) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
-  }; //
+  }; 
 
   return (
     <SafeAreaView edges={['top']} style={styles.container}>

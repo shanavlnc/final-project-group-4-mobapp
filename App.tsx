@@ -7,6 +7,7 @@ import { ApplicationProvider } from './src/context/ApplicationContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { theme } from './src/constants/colors';
 
+// app
 export default function App() {
   return (
     <ThemeProvider theme={theme}>

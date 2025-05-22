@@ -4,7 +4,7 @@ import {
   ScrollView, 
   StyleSheet, 
   TouchableOpacity,
-  Text // Added Text import
+  Text 
 } from 'react-native';
 import { useApplication } from '../../context/ApplicationContext'; 
 import { useAuth } from '../../context/AuthContext'; 
@@ -17,8 +17,9 @@ interface AdminDashboardProps {
   navigation: {
     navigate: (screen: string) => void;
   };
-} //
+} 
 
+// admin dashboard
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ navigation }) => {
   const { pets, applications } = useApplication();
   const { user, signOut } = useAuth();

@@ -3,12 +3,13 @@ import { View, FlatList, StyleSheet, Text, TouchableOpacity, Alert, RefreshContr
 import { useApplication } from '../../context/ApplicationContext';
 import { theme } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { Application } from '../../types';
 
 const ApplicationReviewScreen = () => {
   const { applications, updateApplicationStatus, refreshData } = useApplication();
   const [filter, setFilter] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedApp, setSelectedApp] = useState(null);
+  const [selectedApp, setSelectedApp] = useState<Application | null>(null);
 
   const filteredApps = applications.filter(app => app.status === filter);
 
@@ -16,7 +17,7 @@ const ApplicationReviewScreen = () => {
     setRefreshing(true);
     await refreshData();
     setRefreshing(false);
-  }; //
+  };
 
   const handleStatusChange = async (id: string, status: 'approved' | 'rejected') => {
     Alert.alert(
@@ -29,6 +30,9 @@ const ApplicationReviewScreen = () => {
           onPress: async () => {
             try {
               await updateApplicationStatus(id, status);
+              if (selectedApp?.id === id) {
+                setSelectedApp({ ...selectedApp, status });
+              }
             } catch (error) {
               Alert.alert('Error', 'Failed to update application');
             }
@@ -232,7 +236,7 @@ const ApplicationReviewScreen = () => {
       )}
     </View>
   );
-}; //
+};
 
 const styles = StyleSheet.create({
   container: {

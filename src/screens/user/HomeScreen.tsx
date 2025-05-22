@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UserStackParamList } from '../../types';
 
+// home screen
 type HomeScreenNavigationProp = StackNavigationProp<UserStackParamList, 'Home'>;
 
 const HomeScreen = () => {

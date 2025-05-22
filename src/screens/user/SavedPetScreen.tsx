@@ -7,7 +7,7 @@ import { theme } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UserStackParamList } from '../../types/index';
-
+// saved pets screen
 interface SavedPetsScreenProps {
   navigation: StackNavigationProp<UserStackParamList, 'SavedPets'>;
 }

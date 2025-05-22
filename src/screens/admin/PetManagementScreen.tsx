@@ -17,8 +17,9 @@ interface PetManagementScreenProps {
   navigation: {
     navigate: (screen: string, params?: { pet: any }) => void;
   };
-} //
+} 
 
+// pet management screen
 const PetManagementScreen: React.FC<PetManagementScreenProps> = ({ navigation }) => {
   const { pets, deletePet, refreshData } = useApplication();
   const [refreshing, setRefreshing] = useState(false);

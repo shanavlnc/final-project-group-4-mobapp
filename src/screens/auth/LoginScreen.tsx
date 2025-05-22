@@ -1,6 +1,5 @@
 /**
- * LoginScreen.tsx
- * 
+ * LoginScreen
  * Authentication screen that handles user login.
  * Provides a form for users to enter their credentials and handles the login process.
  * 

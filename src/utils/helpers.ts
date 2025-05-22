@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Pet, Application } from '../types';
-
+// helpers
 // Storage Keys
 const PETS_KEY = 'pets';
 const APPLICATIONS_KEY = 'applications';

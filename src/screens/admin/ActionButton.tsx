@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme, getShadowStyle } from '../../constants/colors';
 
 interface ActionButtonProps {
-  icon: keyof typeof Ionicons.glyphMap; // Only allow valid Ionicons names
+  icon: keyof typeof Ionicons.glyphMap;
   label: string;
   onPress: () => void;
 }

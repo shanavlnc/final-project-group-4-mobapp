@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { theme } from '../constants/colors';
-
+// loader
 interface LoaderProps {
   message?: string;
   inline?: boolean;

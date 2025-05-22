@@ -1,6 +1,5 @@
 /**
- * AuthContext.tsx
- * 
+ * AuthContext
  * Authentication context provider that manages user authentication state and operations.
  * Handles user sign-in, sign-out, and registration functionality with persistent storage.
  * 

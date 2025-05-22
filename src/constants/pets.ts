@@ -1,5 +1,5 @@
 import { Pet } from '../types/index';
-
+// placeholder pets
 const placeholderPets: Pet[] = [
   {
     id: '1',

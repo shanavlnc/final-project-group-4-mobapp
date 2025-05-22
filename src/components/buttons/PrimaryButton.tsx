@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { theme } from '../../constants/colors';
 
+// primary button
 interface PrimaryButtonProps {
   title: string;
   onPress: () => void;

@@ -8,6 +8,7 @@ import { Pet } from '../../types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UserStackParamList } from '../../types/index';
 
+// pet details screen
 const PetDetailScreen = () => {
   const route = useRoute<RouteProp<UserStackParamList, 'PetDetail'>>();
   const navigation = useNavigation<StackNavigationProp<UserStackParamList>>();

@@ -2,8 +2,15 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 
-const WelcomeScreen = ({ navigation }) => {
+interface WelcomeScreenProps {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Welcome'>;
+}
+
+// welcome screen
+const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
   return (
     <View style={styles.container}>
       <Image 

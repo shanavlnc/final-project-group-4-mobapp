@@ -174,7 +174,10 @@ const AdoptionFormScreen = () => {
   useEffect(() => {
     const calculateProgress = () => {
       const totalFields = Object.keys(schema.fields).length;
-      const filledFields = Object.keys(formValues).filter(key => !!formValues[key]).length;
+      const filledFields = Object.keys(formValues).filter(key => {
+        const value = formValues[key as keyof FormData];
+        return !!value;
+      }).length;
       return filledFields / totalFields;
     };
 
@@ -201,9 +204,15 @@ const AdoptionFormScreen = () => {
       return;
     }
 
+    if (!user?.id) {
+      Alert.alert('Error', 'You must be logged in to submit an application.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await submitApplication({
+        userId: user.id,
         petId: pet.id,
         petName: pet.name,
         applicantName: data.fullName,

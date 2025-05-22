@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ImageRequireSource } from 'react-native';
-
+// types
 // Core Data Types
 export interface Pet {
   id: string;

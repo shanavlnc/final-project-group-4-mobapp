@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, TextInputProps, Animated } from 'rea
 import { theme } from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Control, Controller } from 'react-hook-form';
-
+// form input
 interface FormInputProps extends Omit<TextInputProps, 'value' | 'onChangeText'> {
   label: string;
   error?: string;
