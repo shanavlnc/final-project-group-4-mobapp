@@ -224,8 +224,7 @@ export const ApplicationProvider: React.FC<{children: React.ReactNode}> = ({ chi
               } 
             : pet
         );
-
-        // Reject all other pending applications for this pet
+        // Reject all other pending applications for this pet //
         const finalApplications = updatedApplications.map(app => 
           app.petId === application.petId && app.id !== id
             ? { ...app, status: 'rejected' as const, reviewedDate: new Date() }
