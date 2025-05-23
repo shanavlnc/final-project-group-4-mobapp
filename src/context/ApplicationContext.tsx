@@ -223,7 +223,7 @@ export const ApplicationProvider: React.FC<{children: React.ReactNode}> = ({ chi
                 updatedAt: new Date()
               } 
             : pet
-        );
+        ); //
         // Reject all other pending applications for this pet //
         const finalApplications = updatedApplications.map(app => 
           app.petId === application.petId && app.id !== id
