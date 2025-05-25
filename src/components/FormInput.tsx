@@ -1,94 +1,122 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Switch } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TextInputProps } from 'react-native';
 import { theme } from '../constants/colors';
+import { Ionicons } from '@expo/vector-icons';
 
-interface FormInputProps {
+interface FormInputProps extends TextInputProps {
   label: string;
-  value: any;
-  onChangeText?: (text: string) => void;
-  onValueChange?: (value: boolean) => void;
   error?: string;
-  secureTextEntry?: boolean;
-  multiline?: boolean;
-  numberOfLines?: number;
-  isSwitch?: boolean;
-  placeholder?: string; // Add this
-  editable?: boolean; // Add this
-  keyboardType?: string; // Add this
-  autoCapitalize?: string; // Add this
-  pointerEvents?: 'auto' | 'none' | 'box-none' | 'box-only'; // Add this
+  icon?: keyof typeof Ionicons.glyphMap; 
+  showCharCounter?: boolean;
+  required?: boolean;
 }
 
-const FormInput: React.FC<FormInputProps> = ({
+export const FormInput: React.FC<FormInputProps> = ({
   label,
-  value,
-  onChangeText,
-  onValueChange,
   error,
-  secureTextEntry = false,
-  multiline = false,
-  numberOfLines = 1,
-  isSwitch = false
+  icon,
+  showCharCounter = false,
+  value = '',
+  maxLength,
+  required = false, 
+  ...props
 }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      {isSwitch ? (
-        <Switch
-          value={value}
-          onValueChange={onValueChange}
-          trackColor={{ false: '#767577', true: theme.primary }}
-          thumbColor={value ? '#f5dd4b' : '#f4f3f4'}
-        />
-      ) : (
+      <Text style={styles.label}>
+        {label}
+        {required && <Text style={styles.required}> *</Text>} 
+      </Text>
+      
+      <View style={styles.inputContainer}>
+        {icon && (
+          <Ionicons 
+            name={icon} 
+            size={20} 
+            color={theme.textLight} 
+            style={styles.icon} 
+          />
+        )}
         <TextInput
           style={[
             styles.input,
-            multiline && styles.multilineInput,
-            error && styles.errorInput
+            error && styles.errorInput,
+            props.multiline && styles.multilineInput,
+            !props.editable && styles.disabledInput,
+            icon && { paddingLeft: 35 }
           ]}
+          placeholderTextColor="#999"
           value={value}
-          onChangeText={onChangeText}
-          secureTextEntry={secureTextEntry}
-          multiline={multiline}
-          numberOfLines={numberOfLines}
+          {...props}
         />
-      )}
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      </View>
+
+      <View style={styles.footer}>
+        {error && <Text style={styles.errorText}>{error}</Text>}
+        {showCharCounter && maxLength && (
+          <Text style={styles.charCounter}>
+            {value.length}/{maxLength}
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 15
+    marginBottom: 16,
   },
   label: {
     fontSize: 16,
-    marginBottom: 5,
-    color: theme.text
+    marginBottom: 8,
+    color: theme.text,
+    fontWeight: '500',
+  },
+  required: {
+    color: theme.danger,
+  },
+  inputContainer: {
+    position: 'relative',
+  },
+  icon: {
+    position: 'absolute',
+    left: 10,
+    top: 15,
+    zIndex: 1,
   },
   input: {
-    height: 50,
+    height: 48,
     borderWidth: 1,
     borderColor: theme.border,
     borderRadius: 8,
-    padding: 10,
+    paddingHorizontal: 12,
     fontSize: 16,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   multilineInput: {
     height: 100,
-    textAlignVertical: 'top'
+    textAlignVertical: 'top',
+    paddingTop: 12,
   },
   errorInput: {
-    borderColor: theme.danger
+    borderColor: theme.danger,
+  },
+  disabledInput: {
+    backgroundColor: '#f5f5f5',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   errorText: {
     color: theme.danger,
+    fontSize: 14,
+    marginTop: 4,
+  },
+  charCounter: {
+    color: theme.textLight,
     fontSize: 12,
-    marginTop: 5
-  }
+    alignSelf: 'flex-end',
+  },
 });
-
-export default FormInput;

@@ -1,66 +1,65 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { View, ScrollView, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { theme } from '../../constants/colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Pet, UserStackParamList } from '../../types';
+import { Ionicons } from '@expo/vector-icons';
+import { Pet } from '../../types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { UserStackParamList } from '../../types';
 
-// Define navigation prop type
-type PetDetailScreenNavigationProp = NativeStackNavigationProp<UserStackParamList, 'PetDetail'>;
-
-const PetDetailScreen = () => {
-  const navigation = useNavigation<PetDetailScreenNavigationProp>();
-  const route = useRoute();
-  const { pet } = route.params as { pet: Pet }; // Use your Pet interface type
-
-  const handleAdoptPress = async () => {
-    try {
-      const savedPets = await AsyncStorage.getItem('savedPets');
-      let updatedSavedPets = savedPets ? JSON.parse(savedPets) : [];
-      
-      if (!updatedSavedPets.some((p: Pet) => p.id === pet.id)) {
-        updatedSavedPets.push(pet);
-        await AsyncStorage.setItem('savedPets', JSON.stringify(updatedSavedPets));
-      }
-      navigation.navigate('AdoptionForm', { pet });
-    } catch (error) {
-      console.error('Error saving pet:', error);
-      Alert.alert('Error', 'Failed to save pet. Please try again.');
-    }
-  };
+export const PetDetailScreen = () => {
+  const route = useRoute<RouteProp<UserStackParamList, 'PetDetail'>>();
+  const navigation = useNavigation<StackNavigationProp<UserStackParamList>>();
+  const { pet } = route.params;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Image source={pet.imageUrl} style={styles.image} resizeMode="cover" />
-      
-      <View style={styles.detailsContainer}>
-        <View style={styles.nameContainer}>
+    <ScrollView style={styles.container}>
+      <TouchableOpacity 
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={24} color={theme.text} />
+      </TouchableOpacity>
+
+      <Image source={{ uri: pet.imageUrl }} style={styles.image} resizeMode="cover" />
+
+      <View style={styles.content}>
+        <View style={styles.header}>
           <Text style={styles.name}>{pet.name}</Text>
-          <Text style={styles.status}>
-            {pet.status === 'available' ? '🟢 Available' : '🔴 Adopted'}
+          <Text style={styles.details}>
+            {pet.species} • {pet.age} • {pet.gender}
           </Text>
         </View>
-        
-        <View style={styles.detailsRow}>
-          <Text style={styles.detail}>{pet.breed}</Text>
-          <Text style={styles.separator}>•</Text>
-          <Text style={styles.detail}>{pet.age}</Text>
-          <Text style={styles.separator}>•</Text>
-          <Text style={styles.detail}>{pet.gender}</Text>
+
+        <View style={styles.infoSection}>
+          <Text style={styles.sectionTitle}>About</Text>
+          <Text style={styles.description}>{pet.description}</Text>
         </View>
-        
-        <Text style={styles.sectionTitle}>About {pet.name}</Text>
-        <Text style={styles.description}>{pet.description}</Text>
-        
-        {pet.status === 'available' && (
-          <TouchableOpacity 
-            style={styles.adoptButton}
-            onPress={handleAdoptPress}
-          >
-            <Text style={styles.adoptButtonText}>Adopt {pet.name}</Text>
-          </TouchableOpacity>
-        )}
+
+        <View style={styles.infoSection}>
+          <Text style={styles.sectionTitle}>Details</Text>
+          <View style={styles.detailRow}>
+            <Ionicons name="paw" size={20} color={theme.textLight} />
+            <Text style={styles.detailText}>Breed: {pet.breed || 'Mixed'}</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Ionicons name="resize" size={20} color={theme.textLight} />
+            <Text style={styles.detailText}>Size: {pet.size || 'Medium'}</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Ionicons name="heart" size={20} color={theme.textLight} />
+            <Text style={styles.detailText}>
+              Temperament: {pet.temperament?.join(', ') || 'Friendly'}
+            </Text>
+          </View>
+        </View>
+
+        <TouchableOpacity 
+          style={styles.adoptButton}
+          onPress={() => navigation.navigate('AdoptionForm', { pet })}
+        >
+          <Text style={styles.adoptButtonText}>Adopt {pet.name}</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -68,56 +67,62 @@ const PetDetailScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    flex: 1,
+    backgroundColor: theme.background,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    zIndex: 1,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    borderRadius: 20,
+    padding: 8,
   },
   image: {
     width: '100%',
     height: 350,
   },
-  detailsContainer: {
+  content: {
     padding: 20,
+    paddingBottom: 40,
   },
-  nameContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
+  header: {
+    marginBottom: 20,
   },
   name: {
     fontSize: 28,
     fontWeight: 'bold',
     color: theme.text,
   },
-  status: {
+  details: {
     fontSize: 16,
     color: theme.textLight,
+    marginTop: 5,
   },
-  detailsRow: {
-    flexDirection: 'row',
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  detail: {
-    marginRight: 8,
-    color: theme.textLight,
-    fontSize: 16,
-  },
-  separator: {
-    marginRight: 8,
-    color: theme.textLight,
+  infoSection: {
+    marginBottom: 25,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 15,
-    marginBottom: 10,
     color: theme.primary,
+    marginBottom: 10,
   },
   description: {
     fontSize: 16,
     lineHeight: 24,
     color: theme.text,
-    marginBottom: 30,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  detailText: {
+    fontSize: 16,
+    color: theme.text,
+    marginLeft: 10,
   },
   adoptButton: {
     backgroundColor: theme.primary,
@@ -132,5 +137,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default PetDetailScreen;

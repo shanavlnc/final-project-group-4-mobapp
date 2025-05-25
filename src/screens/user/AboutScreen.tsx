@@ -1,63 +1,51 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Linking, TouchableOpacity } from 'react-native';
-import { theme } from '../../constants/colors';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { theme } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 
-const AboutScreen = ({ navigation }) => {
+export const AboutScreen = ({ navigation }) => {
   const openLink = (url: string) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color={theme.text} />
-          </TouchableOpacity>
-          <Text style={styles.title}>About Our Shelter</Text>
-          <View style={{ width: 24 }} />
-        </View>
-        
+    <SafeAreaView edges={['top']} style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <TouchableOpacity 
+          style={styles.backButton} 
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={24} color={theme.text} />
+        </TouchableOpacity>
+
+        <Text style={styles.title}>About Our Shelter</Text>
+
         <Text style={styles.sectionTitle}>Our Mission</Text>
         <Text style={styles.text}>
           We are dedicated to rescuing abandoned and abused animals, providing them with medical care,
-          rehabilitation, and finding them loving forever homes.
+          rehabilitation, and finding them loving forever homes through responsible adoption practices.
         </Text>
-        
+
         <Text style={styles.sectionTitle}>Adoption Process</Text>
-        <Text style={styles.text}>
-          1. Browse available pets on our app or visit our shelter{"\n"}
-          2. Submit an adoption application{"\n"}
-          3. Meet with our adoption counselor{"\n"}
-          4. Home visit (if required){"\n"}
-          5. Finalize adoption and take your new pet home!
-        </Text>
-        
-        <Text style={styles.sectionTitle}>FAQs</Text>
-        <Text style={styles.subSectionTitle}>Can you adopt my pet?</Text>
-        <Text style={styles.text}>
-          We do NOT adopt owned pets. We already have 300+ shelter animals rescued from cruelty and 
-          neglect that are waiting to be adopted.
-        </Text>
-        
-        <Text style={styles.subSectionTitle}>I live abroad. Can I still adopt?</Text>
-        <Text style={styles.text}>
-          Yes, but special arrangements need to be made for the meet-and-greet. Please contact us to 
-          discuss your options.
-        </Text>
-        
+        <Text style={styles.listItem}>1. Browse available pets</Text>
+        <Text style={styles.listItem}>2. Submit an application</Text>
+        <Text style={styles.listItem}>3. Meet with an adoption counselor</Text>
+        <Text style={styles.listItem}>4. Home visit (if required)</Text>
+        <Text style={styles.listItem}>5. Finalize adoption</Text>
+
         <Text style={styles.sectionTitle}>Contact Us</Text>
-        <TouchableOpacity onPress={() => openLink('mailto:adopt@shelter.org')}>
-          <Text style={[styles.text, styles.link]}>Email: adopt@shelter.org</Text>
+        <TouchableOpacity onPress={() => openLink('mailto:contact@petshelter.org')}>
+          <Text style={styles.link}>Email: contact@petshelter.org</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => openLink('tel:+1234567890')}>
-          <Text style={[styles.text, styles.link]}>Phone: (123) 456-7890</Text>
+        <TouchableOpacity onPress={() => openLink('tel:+15551234567')}>
+          <Text style={styles.link}>Phone: (555) 123-4567</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => openLink('https://maps.google.com/?q=Shelter+Address')}>
-          <Text style={[styles.text, styles.link]}>Address: 123 Rescue St, Pet City</Text>
+        <TouchableOpacity onPress={() => openLink('https://maps.google.com/?q=123+Pet+Shelter+St')}>
+          <Text style={styles.link}>Address: 123 Pet Shelter St</Text>
         </TouchableOpacity>
+
+        <Text style={styles.footer}>Version 1.0.0</Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -65,47 +53,51 @@ const AboutScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: theme.background,
+  },
+  content: {
     padding: 20,
     paddingBottom: 40,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  backButton: {
     marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: theme.text,
-    textAlign: 'center',
-    flex: 1,
+    marginBottom: 30,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: theme.primary,
     marginTop: 20,
     marginBottom: 10,
-    color: theme.primary,
-  },
-  subSectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 15,
-    marginBottom: 5,
-    color: theme.text,
   },
   text: {
     fontSize: 16,
     lineHeight: 24,
     color: theme.text,
-    marginBottom: 10,
+    marginBottom: 15,
+  },
+  listItem: {
+    fontSize: 16,
+    color: theme.text,
+    marginBottom: 5,
+    marginLeft: 15,
   },
   link: {
+    fontSize: 16,
     color: theme.info,
     textDecorationLine: 'underline',
     marginBottom: 15,
   },
+  footer: {
+    fontSize: 14,
+    color: theme.textLight,
+    marginTop: 30,
+    textAlign: 'center',
+  },
 });
-
-export default AboutScreen;

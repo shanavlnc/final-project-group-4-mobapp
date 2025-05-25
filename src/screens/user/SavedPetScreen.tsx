@@ -1,76 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, FlatList, StyleSheet, Text, TouchableOpacity, RefreshControl } from 'react-native';
+import { useApplication } from '../../context/ApplicationContext';
+import { PetCard } from '../../components/PetCard';
 import { theme } from '../../constants/colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Pet, UserStackParamList } from '../../types';
+import { Ionicons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { UserStackParamList } from '../../types';
 
-// Define navigation prop type
-type SavedPetsScreenNavigationProp = NativeStackNavigationProp<UserStackParamList, 'Home'>;
+interface SavedPetsScreenProps {
+  navigation: StackNavigationProp<UserStackParamList, 'SavedPets'>;
+}
 
-const SavedPetsScreen = () => {
-  const [savedPets, setSavedPets] = useState<Pet[]>([]);
-  const navigation = useNavigation<SavedPetsScreenNavigationProp>();
+export const SavedPetsScreen = ({ navigation }: SavedPetsScreenProps) => {
+  const { savedPets, toggleSavedPet } = useApplication(); // Using toggleSavedPet instead of removeSavedPet
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const loadSavedPets = async () => {
-      try {
-        const savedPetsData = await AsyncStorage.getItem('savedPets');
-        if (savedPetsData) {
-          const parsedPets = JSON.parse(savedPetsData) as Pet[];
-          setSavedPets(parsedPets);
-        }
-      } catch (error) {
-        console.error('Error loading saved pets:', error);
-      }
-    };
-
-    loadSavedPets();
-  }, []);
-
-  const removePet = async (petId: string) => {
-    try {
-      const updatedPets = savedPets.filter(pet => pet.id !== petId);
-      setSavedPets(updatedPets);
-      await AsyncStorage.setItem('savedPets', JSON.stringify(updatedPets));
-    } catch (error) {
-      console.error('Error removing pet:', error);
-    }
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    // You can add refresh logic here if needed
+    setRefreshing(false);
   };
 
   return (
     <View style={styles.container}>
-      {savedPets.length > 0 ? (
-        <FlatList
-          data={savedPets}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity 
-              style={styles.petItem}
-              onPress={() => navigation.navigate('PetDetail', { pet: item })}
-            >
-              <Image source={item.imageUrl} style={styles.petImage} />
-              <View style={styles.petInfo}>
-                <Text style={styles.petName}>{item.name}</Text>
-                <Text style={styles.petDetails}>{item.breed} • {item.age}</Text>
-              </View>
-              <TouchableOpacity 
-                style={styles.removeButton}
-                onPress={() => removePet(item.id)}
-              >
-                <Text style={styles.removeButtonText}>×</Text>
-              </TouchableOpacity>
-            </TouchableOpacity>
-          )}
-          contentContainerStyle={styles.listContent}
-        />
-      ) : (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No saved pets yet</Text>
-          <Text style={styles.emptySubText}>Swipe right on pets to save them</Text>
-        </View>
-      )}
+      <FlatList
+        data={savedPets}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <PetCard
+            pet={item}
+            onPress={() => navigation.navigate('PetDetail', { pet: item })}
+            onFavorite={() => toggleSavedPet(item.id)} // Using toggleSavedPet
+            isFavorite={true}
+          />
+        )}
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Ionicons name="heart-dislike" size={50} color={theme.textLight} />
+            <Text style={styles.emptyText}>No saved pets yet</Text>
+            <Text style={styles.emptySubtext}>
+              Tap the heart icon on pets to save them
+            </Text>
+          </View>
+        }
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={[theme.primary]}
+          />
+        }
+      />
     </View>
   );
 };
@@ -78,66 +59,26 @@ const SavedPetsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: theme.background,
   },
   listContent: {
     padding: 15,
-  },
-  petItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    marginBottom: 10,
-    backgroundColor: theme.cardBackground,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1.41,
-    elevation: 2,
-  },
-  petImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-  petInfo: {
-    flex: 1,
-    marginLeft: 15,
-  },
-  petName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: theme.text,
-  },
-  petDetails: {
-    fontSize: 14,
-    color: theme.textLight,
-    marginTop: 5,
-  },
-  removeButton: {
-    padding: 5,
-  },
-  removeButtonText: {
-    fontSize: 24,
-    color: theme.danger,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 40,
   },
   emptyText: {
     fontSize: 18,
     color: theme.text,
+    marginTop: 20,
     marginBottom: 10,
   },
-  emptySubText: {
+  emptySubtext: {
     fontSize: 16,
     color: theme.textLight,
     textAlign: 'center',
   },
 });
-
-export default SavedPetsScreen;

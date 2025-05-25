@@ -1,25 +1,16 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { theme } from '../constants/colors';
-import AdminHomeScreen from '../screens/admin/AdminHomeScreen';
-import AddPetScreen from '../screens/admin/AddPetScreen';
-import ReviewApplicationsScreen from '../screens/admin/ReviewApplicationsScreen';
-import ApprovedApplicationsScreen from '../screens/admin/ApprovedApplicationsScreen';
-import PetManagementScreen from '../screens/admin/PetManagementScreen';
-
-export type AdminStackParamList = {
-  AdminHome: undefined;
-  AddPet: undefined;
-  ReviewApplications: undefined;
-  ApprovedApplications: undefined;
-  PetManagement: undefined; // Add this line
-};
+import { AdminStackParamList } from '../types';
+import { AdminDashboard } from "../screens/admin/AdminDashboard";
+import { PetManagementScreen } from '../screens/admin/PetManagementScreen';
+import { AddPetModal } from '../screens/admin/AddPetModal';
+import { ApplicationReviewScreen } from '../screens/admin/ApplicationReviewScreen';
 
 const Stack = createNativeStackNavigator<AdminStackParamList>();
 
-const AdminStack = () => (
+export const AdminStack = () => (
   <Stack.Navigator
-    id="AdminStack"
     screenOptions={{
       headerStyle: {
         backgroundColor: theme.primary,
@@ -28,35 +19,33 @@ const AdminStack = () => (
       headerTitleStyle: {
         fontWeight: 'bold',
       },
-      headerBackTitle: '',
+      contentStyle: {
+        backgroundColor: theme.background,
+      },
     }}
   >
-    <Stack.Screen 
-      name="AdminHome" 
-      component={AdminHomeScreen} 
-      options={{ title: 'Admin Dashboard' }} 
+    <Stack.Screen
+      name="AdminDashboard"
+      component={AdminDashboard}
+      options={{ title: 'Dashboard' }}
     />
-    <Stack.Screen 
-      name="AddPet" 
-      component={AddPetScreen}
-      options={{ title: 'Add New Pet' }}
-    />
-    <Stack.Screen 
-      name="ReviewApplications" 
-      component={ReviewApplicationsScreen}
-      options={{ title: 'Review Applications' }}
-    />
-    <Stack.Screen 
-      name="ApprovedApplications" 
-      component={ApprovedApplicationsScreen}
-      options={{ title: 'Approved Applications' }}
-    />
-    <Stack.Screen 
-      name="PetManagement" 
+    <Stack.Screen
+      name="PetManagement"
       component={PetManagementScreen}
       options={{ title: 'Manage Pets' }}
     />
+    <Stack.Screen
+      name="AddPet"
+      component={AddPetModal}
+      options={{
+        presentation: 'modal',
+        title: 'Add New Pet',
+      }}
+    />
+    <Stack.Screen
+      name="ApplicationReview"
+      component={ApplicationReviewScreen}
+      options={{ title: 'Applications' }}
+    />
   </Stack.Navigator>
 );
-
-export default AdminStack;

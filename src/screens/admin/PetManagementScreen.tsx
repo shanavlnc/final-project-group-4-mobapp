@@ -1,78 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { usePets } from '../../context/PetContext';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { 
+  View, 
+  FlatList, 
+  StyleSheet, 
+  RefreshControl,
+  Text // Added Text import
+} from 'react-native';
+import { useApplication } from '../../context/ApplicationContext'; 
+import { PetCard } from '../../components/PetCard';
+import { FloatingActionButton } from '../../components/buttons/FloatingActionButton';
+import { AddPetModal } from '../admin/AddPetModal';
 import { theme } from '../../constants/colors';
 
-const PetManagementScreen = () => {
-  const { pets, removePet } = usePets(); // Changed from deletePet to removePet if that's what your context uses
-  const [filter, setFilter] = useState<'all' | 'available' | 'adopted'>('all');
+interface PetManagementScreenProps {
+  navigation: {
+    navigate: (screen: string, params?: { pet: any }) => void;
+  };
+}
 
-  const filteredPets = pets.filter(pet => {
-    if (filter === 'all') return true;
-    return pet.status === filter;
-  });
+export const PetManagementScreen: React.FC<PetManagementScreenProps> = ({ navigation }) => {
+  const { pets, deletePet, refreshData } = useApplication();
+  const [refreshing, setRefreshing] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
-  const confirmDelete = (petId: string) => {
-    Alert.alert(
-      'Confirm Deletion',
-      'Are you sure you want to delete this pet?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          onPress: () => removePet(petId), // Make sure this matches your context method name
-        },
-      ]
-    );
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refreshData();
+    setRefreshing(false);
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.filterContainer}>
-        <TouchableOpacity
-          style={[styles.filterButton, filter === 'all' && styles.activeFilter]}
-          onPress={() => setFilter('all')}
-        >
-          <Text>All Pets</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.filterButton, filter === 'available' && styles.activeFilter]}
-          onPress={() => setFilter('available')}
-        >
-          <Text>Available</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.filterButton, filter === 'adopted' && styles.activeFilter]}
-          onPress={() => setFilter('adopted')}
-        >
-          <Text>Adopted</Text>
-        </TouchableOpacity>
-      </View>
-
       <FlatList
-        data={filteredPets}
+        data={pets}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.petCard}>
-            <Text style={styles.petName}>{item.name}</Text>
-            <Text>{item.breed} • {item.age} • {item.gender}</Text>
-            <Text>Status: {item.status}</Text>
-            <Text>Added: {new Date(item.createdAt).toLocaleDateString()}</Text>
-            
-            <View style={styles.actions}>
-              <TouchableOpacity 
-                style={styles.deleteButton}
-                onPress={() => confirmDelete(item.id)}
-              >
-                <Ionicons name="trash" size={20} color={theme.danger} />
-              </TouchableOpacity>
-            </View>
-          </View>
+          <PetCard 
+            pet={item} 
+            adminMode
+            onDelete={() => deletePet(item.id)}
+            onPress={() => navigation.navigate('AddPet', { pet: item })}
+          />
         )}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={[theme.primary]}
+          />
+        }
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No pets found</Text>
+          </View>
+        }
+      />
+
+      <FloatingActionButton 
+        icon="add"
+        onPress={() => setShowAddModal(true)}
+        position="relative"
+        style={styles.fab}
+      />
+
+      <AddPetModal
+        visible={showAddModal}
+        onClose={() => setShowAddModal(false)}
       />
     </View>
   );
@@ -81,46 +75,24 @@ const PetManagementScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    backgroundColor: theme.background,
   },
-  filterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 15,
+  listContent: {
+    padding: 16,
+    paddingBottom: 80,
   },
-  filterButton: {
-    padding: 10,
-    borderRadius: 5,
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
-  activeFilter: {
-    backgroundColor: '#FFB6B6', // Updated color
-    borderBottomWidth: 2,
-    borderBottomColor: theme.primary,
-  },
-  petCard: {
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    elevation: 2,
-  },
-  petName: {
+  emptyText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
+    color: theme.textLight,
   },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 10,
-  },
-  deleteButton: {
-    padding: 5,
+  fab: {
+    margin: 16,
+    alignSelf: 'flex-end',
   },
 });
-
-export default PetManagementScreen;

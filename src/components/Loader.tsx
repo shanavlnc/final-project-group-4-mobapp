@@ -1,11 +1,25 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { theme } from '../constants/colors';
 
-const Loader = () => {
+interface LoaderProps {
+  message?: string;
+  inline?: boolean;
+  size?: 'small' | 'large';
+}
+
+export const Loader: React.FC<LoaderProps> = ({ 
+  message, 
+  inline = false, 
+  size = 'large' 
+}) => {
   return (
-    <View style={styles.container}>
-      <ActivityIndicator size="large" color={theme.primary} />
+    <View style={[styles.container, inline && styles.inlineContainer]}>
+      <ActivityIndicator 
+        size={size} 
+        color={theme.primary} 
+      />
+      {message && <Text style={styles.message}>{message}</Text>}
     </View>
   );
 };
@@ -15,8 +29,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white'
-  }
+    backgroundColor: theme.background,
+  },
+  inlineContainer: {
+    flex: 0,
+    padding: 20,
+  },
+  message: {
+    marginTop: 10,
+    color: theme.text,
+    fontSize: 16,
+  },
 });
-
-export default Loader;

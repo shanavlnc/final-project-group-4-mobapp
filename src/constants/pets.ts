@@ -1,59 +1,165 @@
-interface Pet {
-  createdAt: any;
-  id: string;
-  name: string;
-  breed: string;
-  age: string;
-  gender: string;
-  description: string;
-  imageUrl: any;
-  status: 'available' | 'adopted';
-}
+import { Pet } from '../types';
 
 export const placeholderPets: Pet[] = [
   {
     id: '1',
-    name: 'Smiley',
-    breed: 'Aspin',
+    name: 'Buddy',
+    species: 'Dog',
+    breed: 'Golden Retriever',
     age: '2 years',
     gender: 'Male',
-    description: 'Very friendly and loves to play fetch. Gets along well with other dogs.',
-    imageUrl: require('../assets/images/smiley.png'),
+    size: 'large',
+    temperament: ['friendly', 'playful', 'good with kids'],
+    description: 'Loves fetch and swimming. Great family dog with gentle temperament.',
+    imageUrl: require('../assets/images/dog1.jpg'),
     status: 'available',
-    createdAt: undefined
+    createdAt: new Date('2023-01-15'),
   },
   {
     id: '2',
-    name: 'Owen',
-    breed: 'Puspin',
-    age: '1.5 years',
-    gender: 'Male',
-    description: 'Loves cuddles and naps. Already neutered and vaccinated.',
-    imageUrl: require('../assets/images/owen.png'),
+    name: 'Luna',
+    species: 'Cat',
+    breed: 'Siamese Mix',
+    age: '1 year',
+    gender: 'Female',
+    size: 'small',
+    temperament: ['affectionate', 'curious'],
+    description: 'Enjoys sunbathing and feather toys. Fully vaccinated.',
+    imageUrl: require('../assets/images/cat1.jpg'),
     status: 'available',
-    createdAt: undefined
+    createdAt: new Date('2023-03-10'),
   },
   {
     id: '3',
-    name: 'Vicky',
-    breed: 'Aspin',
-    age: '3 years',
-    gender: 'Female',
-    description: 'Gentle and well-behaved. Great with children and other pets.',
-    imageUrl: require('../assets/images/vicky.png'),
-    status: 'available',
-    createdAt: undefined
-  },
-  // Add all other pets following the same structure
-  {
-    id: '30',
-    name: 'Walter White',
-    breed: 'Puspin',
+    name: 'Rocky',
+    species: 'Dog',
+    breed: 'Beagle',
     age: '4 years',
     gender: 'Male',
-    description: 'A calm and dignified cat who enjoys quiet environments.',
-    imageUrl: require('../assets/images/walter.png'),
+    size: 'medium',
+    temperament: ['energetic', 'vocal', 'friendly'],
+    description: 'Loves long walks and sniffing adventures. House-trained.',
+    imageUrl: require('../assets/images/dog2.jpg'),
+    status: 'adopted',
+    createdAt: new Date('2022-11-05'),
+  },
+  {
+    id: '4',
+    name: 'Milo',
+    species: 'Dog',
+    breed: 'French Bulldog',
+    age: '3 years',
+    gender: 'Male',
+    size: 'small',
+    temperament: ['playful', 'affectionate', 'good with kids'],
+    description: 'Very cuddly and loves attention. Gets along with other pets.',
+    imageUrl: require('../assets/images/dog3.jpg'),
     status: 'available',
-    createdAt: undefined
+    createdAt: new Date('2023-02-18'),
+  },
+  {
+    id: '5',
+    name: 'Bella',
+    species: 'Cat',
+    breed: 'Maine Coon',
+    age: '5 years',
+    gender: 'Female',
+    size: 'large',
+    temperament: ['calm', 'independent', 'affectionate'],
+    description: 'Gentle giant who enjoys quiet environments and occasional pets.',
+    imageUrl: require('../assets/images/cat2.jpg'),
+    status: 'available',
+    createdAt: new Date('2023-01-30'),
+  },
+  {
+    id: '6',
+    name: 'Charlie',
+    species: 'Dog',
+    breed: 'Labrador Mix',
+    age: '1.5 years',
+    gender: 'Male',
+    size: 'large',
+    temperament: ['energetic', 'friendly', 'good with pets'],
+    description: 'Very active dog who loves playing fetch and going on runs.',
+    imageUrl: require('../assets/images/dog4.jpg'),
+    status: 'available',
+    createdAt: new Date('2023-04-05'),
+  },
+  {
+    id: '7',
+    name: 'Lily',
+    species: 'Cat',
+    breed: 'Domestic Shorthair',
+    age: '2 years',
+    gender: 'Female',
+    size: 'small',
+    temperament: ['shy', 'gentle', 'calm'],
+    description: 'Takes time to warm up but very loving once comfortable.',
+    imageUrl: require('../assets/images/cat3.jpg'),
+    status: 'available',
+    createdAt: new Date('2023-03-22'),
+  },
+  {
+    id: '8',
+    name: 'Max',
+    species: 'Dog',
+    breed: 'German Shepherd',
+    age: '3 years',
+    gender: 'Male',
+    size: 'large',
+    temperament: ['protective', 'intelligent', 'loyal'],
+    description: 'Highly trainable and great with families. Knows basic commands.',
+    imageUrl: require('../assets/images/dog5.jpg'),
+    status: 'adopted',
+    createdAt: new Date('2022-12-10'),
+  },
+  {
+    id: '9',
+    name: 'Sophie',
+    species: 'Cat',
+    breed: 'Ragdoll',
+    age: '4 years',
+    gender: 'Female',
+    size: 'medium',
+    temperament: ['affectionate', 'calm', 'good with kids'],
+    description: 'Loves being held and will go limp in your arms. Very docile.',
+    imageUrl: require('../assets/images/cat4.jpg'),
+    status: 'available',
+    createdAt: new Date('2023-02-28'),
+  },
+  {
+    id: '10',
+    name: 'Duke',
+    species: 'Dog',
+    breed: 'Boxer',
+    age: '2.5 years',
+    gender: 'Male',
+    size: 'large',
+    temperament: ['energetic', 'playful', 'good with kids'],
+    description: 'Full of energy and loves playing. Needs an active family.',
+    imageUrl: require('../assets/images/dog6.jpg'),
+    status: 'available',
+    createdAt: new Date('2023-03-15'),
   }
 ];
+
+export const petSizeOptions = ['small', 'medium', 'large'] as const;
+
+export const temperamentOptions = [
+  'friendly',
+  'shy',
+  'energetic', 
+  'calm',
+  'playful',
+  'independent',
+  'affectionate',
+  'good with kids',
+  'good with pets',
+  'house-trained'
+] as const;
+
+export const speciesOptions = ['Dog', 'Cat', 'Rabbit', 'Bird', 'Other'] as const;
+
+export const genderOptions = ['Male', 'Female', 'Unknown'] as const;
+
+export const statusOptions = ['available', 'adopted'] as const;

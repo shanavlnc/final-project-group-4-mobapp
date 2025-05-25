@@ -1,16 +1,9 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../constants/colors';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types';
+import { Ionicons } from '@expo/vector-icons';
 
-// Define navigation prop type
-type WelcomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Welcome'>;
-
-const WelcomeScreen = () => {
-  const navigation = useNavigation<WelcomeScreenNavigationProp>();
-
+export const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image 
@@ -18,22 +11,31 @@ const WelcomeScreen = () => {
         style={styles.image} 
         resizeMode="contain"
       />
-      <Text style={styles.title}>Find Your Perfect Pet Companion</Text>
-      <Text style={styles.subtitle}>Adopt, don't shop. Give a shelter pet a loving home.</Text>
       
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => navigation.navigate('UserStack')}
-      >
-        <Text style={styles.buttonText}>Get Started</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity 
-        style={styles.adminButton} 
-        onPress={() => navigation.navigate('Login')}
-      >
-        <Text style={styles.adminButtonText}>Shelter Admin Login</Text>
-      </TouchableOpacity>
+      <View style={styles.content}>
+        <Text style={styles.title}>Find Your Perfect Companion</Text>
+        <Text style={styles.subtitle}>
+          Adopt a loving pet and give them a forever home
+        </Text>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity 
+          style={styles.primaryButton}
+          onPress={() => navigation.navigate('UserStack')}
+        >
+          <Text style={styles.primaryButtonText}>Browse Pets</Text>
+          <Ionicons name="paw" size={20} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text style={styles.secondaryButtonText}>Shelter Login</Text>
+          <Ionicons name="log-in" size={20} color={theme.primary} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -41,54 +43,63 @@ const WelcomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: theme.background,
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'white',
+    justifyContent: 'space-between',
+    paddingVertical: 50,
+    paddingHorizontal: 20,
   },
   image: {
     width: '100%',
     height: 300,
-    marginBottom: 30,
+  },
+  content: {
+    alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
+    color: theme.text,
     marginBottom: 10,
     textAlign: 'center',
-    color: theme.text,
   },
   subtitle: {
     fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 40,
     color: theme.textLight,
+    textAlign: 'center',
+    maxWidth: '80%',
   },
-  button: {
+  buttonContainer: {
+    width: '100%',
+  },
+  primaryButton: {
     backgroundColor: theme.primary,
     padding: 15,
     borderRadius: 10,
-    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
   },
-  buttonText: {
+  primaryButtonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+    marginRight: 10,
   },
-  adminButton: {
+  secondaryButton: {
+    borderWidth: 2,
+    borderColor: theme.primary,
     padding: 15,
     borderRadius: 10,
-    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: theme.primary,
   },
-  adminButtonText: {
+  secondaryButtonText: {
     color: theme.primary,
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginRight: 10,
   },
 });
-
-export default WelcomeScreen;
