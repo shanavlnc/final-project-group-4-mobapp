@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '.././constants/colors';
-import { Pet } from '.././types';
+import { Pet } from '.././types/index';
 
 interface PetCardProps {
   pet: Pet;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { theme } from '../constants/colors';
-import { AdminStackParamList } from '../types';
+import { AdminStackParamList } from '../types/index';
 import { AdminDashboard } from "../screens/admin/AdminDashboard";
 import { PetManagementScreen } from '../screens/admin/PetManagementScreen';
 import { AddPetModal } from '../screens/admin/AddPetModal';

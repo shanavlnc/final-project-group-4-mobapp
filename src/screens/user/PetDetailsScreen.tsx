@@ -5,7 +5,7 @@ import { theme } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Pet } from '../../types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { UserStackParamList } from '../../types';
+import { UserStackParamList } from '../../types/index';
 
 export const PetDetailScreen = () => {
   const route = useRoute<RouteProp<UserStackParamList, 'PetDetail'>>();

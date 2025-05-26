@@ -20,7 +20,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { UserStackParamList } from '../../types';
+import { UserStackParamList } from '../../types/index';
 import { Picker } from '@react-native-picker/picker';
 
 type FormData = {

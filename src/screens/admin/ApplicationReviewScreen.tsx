@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Text, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import { useApplication } from '../../context/ApplicationContext';
 import { theme } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
-import { ActivityIndicator } from 'react-native';
-import { Picker } from '@react-native-picker/picker'; 
-import { Application } from '../../types';
 
 export const ApplicationReviewScreen = () => {
   const { applications, updateApplicationStatus, refreshData } = useApplication();

@@ -1,4 +1,4 @@
-import { Pet } from '../types';
+import { Pet } from '../types/index';
 
 export const placeholderPets: Pet[] = [
   {

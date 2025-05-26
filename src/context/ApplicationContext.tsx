@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Pet, Application } from '../types';
+import { Pet, Application } from '../types/index';
 import { placeholderPets } from '../constants/pets';
 
 interface ApplicationState {

@@ -5,7 +5,7 @@ import { PetCard } from '../../components/PetCard';
 import { theme } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { UserStackParamList } from '../../types';
+import { UserStackParamList } from '../../types/index';
 
 interface SavedPetsScreenProps {
   navigation: StackNavigationProp<UserStackParamList, 'SavedPets'>;
