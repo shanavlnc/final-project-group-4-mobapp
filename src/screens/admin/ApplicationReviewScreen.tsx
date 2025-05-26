@@ -45,7 +45,7 @@ export const ApplicationReviewScreen = () => {
           style={[styles.filterButton, filter === 'pending' && styles.activeFilter]}
           onPress={() => setFilter('pending')}
         >
-          <Text style={styles.filterText}>Pending</Text>
+          <Text style={[styles.filterText, filter === 'pending' && styles.activeFilterText]}>Pending</Text>
           <View style={styles.badge}>
             <Text style={styles.badgeText}>
               {applications.filter(a => a.status === 'pending').length}
@@ -57,14 +57,14 @@ export const ApplicationReviewScreen = () => {
           style={[styles.filterButton, filter === 'approved' && styles.activeFilter]}
           onPress={() => setFilter('approved')}
         >
-          <Text style={styles.filterText}>Approved</Text>
+          <Text style={[styles.filterText, filter === 'approved' && styles.activeFilterText]}>Approved</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.filterButton, filter === 'rejected' && styles.activeFilter]}
           onPress={() => setFilter('rejected')}
         >
-          <Text style={styles.filterText}>Rejected</Text>
+          <Text style={[styles.filterText, filter === 'rejected' && styles.activeFilterText]}>Rejected</Text>
         </TouchableOpacity>
       </View>
 

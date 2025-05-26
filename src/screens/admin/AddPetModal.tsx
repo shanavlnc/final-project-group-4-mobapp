@@ -184,43 +184,11 @@ const styles = StyleSheet.create({
   formContainer: {
     padding: 20,
   },
-  pickerGroup: {
-    marginBottom: 20,
-  },
-  pickerLabel: {
-    fontSize: 16,
-    color: theme.text,
-    marginBottom: 8,
-  },
-  picker: {
-    backgroundColor: theme.cardBackground,
-  },
-  temperamentContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  temperamentPill: {
-    padding: 8,
-    margin: 4,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: theme.border,
-  },
-  selectedPill: {
-    backgroundColor: theme.primary,
-    borderColor: theme.primary,
-  },
-  temperamentText: {
-    color: theme.text,
-  },
-  selectedText: {
-    color: 'white',
-  },
-  imagePicker: { 
+  imagePicker: {
     alignItems: 'center',
     marginVertical: 20,
   },
-  image: {  
+  image: {
     width: 150,
     height: 150,
     borderRadius: 10,
