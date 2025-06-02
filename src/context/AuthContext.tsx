@@ -1,6 +1,23 @@
+/**
+ * AuthContext.tsx
+ * 
+ * Authentication context provider that manages user authentication state and operations.
+ * Handles user sign-in, sign-out, and registration functionality with persistent storage.
+ * 
+ * Features:
+ * - User authentication (sign in/out)
+ * - User registration
+ * - Session persistence using AsyncStorage
+ * - Admin/User role management
+ */
+
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+/**
+ * User interface defining the structure of user data
+ * Includes basic user information and role (admin/regular user)
+ */
 interface User {
   id: string;
   email: string;
@@ -8,6 +25,10 @@ interface User {
   isAdmin: boolean;
 }
 
+/**
+ * AuthContext interface defining all available authentication operations
+ * and state management functions
+ */
 export interface AuthContextType {
   user: User | null;
   signIn: (email: string, password: string) => Promise<void>;
@@ -16,21 +37,39 @@ export interface AuthContextType {
   error: string | null;
   register: (email: string, password: string, name: string) => Promise<boolean>;
 }
-//
+
+/**
+ * Default context values
+ * Provides type-safe default implementations for the context
+ */
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
-  error: null, //
+  error: null,
   signIn: async () => {},
   signOut: async () => {},
   register: async () => false,
 });
 
+/**
+ * AuthProvider Component
+ * 
+ * Main authentication provider that manages:
+ * 1. User session state
+ * 2. Authentication operations
+ * 3. User registration
+ * 4. Session persistence
+ */
 const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Load User Operation
+   * Retrieves stored user session from AsyncStorage
+   * Used for session persistence across app restarts
+   */
   const loadUser = useCallback(async () => {
     try {
       const storedUser = await AsyncStorage.getItem('user');
@@ -44,6 +83,13 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
 
   useEffect(() => { loadUser(); }, [loadUser]);
 
+  /**
+   * Sign In Operation
+   * Authenticates user and establishes a session
+   * Handles both regular user and admin authentication
+   * @param email - User's email address
+   * @param password - User's password
+   */
   const signIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
@@ -74,6 +120,11 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
     }
   };
 
+  /**
+   * Registration Operation
+   * Creates a new user account
+   * Always creates regular user accounts (non-admin)
+   */
   const register = async (email: string, password: string, name: string) => {
     try {
       setIsLoading(true);
@@ -97,6 +148,10 @@ const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
     }
   };
 
+  /**
+   * Sign Out Operation
+   * Ends the user session and clears stored data
+   */
   const signOut = async () => {
     try {
       setIsLoading(true);

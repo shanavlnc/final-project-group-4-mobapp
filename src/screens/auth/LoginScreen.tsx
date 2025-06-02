@@ -1,3 +1,17 @@
+/**
+ * LoginScreen.tsx
+ * 
+ * Authentication screen that handles user login.
+ * Provides a form for users to enter their credentials and handles the login process.
+ * 
+ * Features:
+ * - Email and password input
+ * - Secure password entry toggle
+ * - Loading state handling
+ * - Error feedback
+ * - Platform-specific keyboard handling
+ */
+
 import React, { useState } from 'react';
 import { 
   View, 
@@ -14,8 +28,27 @@ import { useAuth } from '../../context/AuthContext';
 import { theme } from '../../constants/colors';
 import Loader from '../../components/Loader';
 import { Ionicons } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types';
 
-const LoginScreen = ({ navigation }) => {
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+
+interface LoginScreenProps {
+  navigation: LoginScreenNavigationProp;
+}
+
+/**
+ * LoginScreen Component
+ * 
+ * Manages the login form state and authentication process:
+ * - Handles form input and validation
+ * - Manages password visibility
+ * - Provides loading feedback during authentication
+ * - Handles authentication errors
+ * 
+ * @param navigation - Navigation prop for screen navigation
+ */
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +134,7 @@ const LoginScreen = ({ navigation }) => {
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
-}; //
+};
 
 const styles = StyleSheet.create({
   safeArea: {

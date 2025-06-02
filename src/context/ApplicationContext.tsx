@@ -167,7 +167,12 @@ export const ApplicationProvider: React.FC<{children: React.ReactNode}> = ({ chi
     }
   };
 
-  // Application Operations
+  /**
+   * Application Submission
+   * Handles new adoption application submissions
+   * Creates a new application with pending status
+   * @param application - The application data without id, status, and date
+   */
   const submitApplication = async (application: Omit<Application, 'id' | 'status' | 'applicationDate'>) => {
     try {
       const newApplication: Application = {
@@ -187,6 +192,13 @@ export const ApplicationProvider: React.FC<{children: React.ReactNode}> = ({ chi
     }
   };
 
+  /**
+   * Application Processing
+   * Handles the complete flow of pet adoption applications:
+   * 1. Updates application status
+   * 2. Updates pet status when approved
+   * 3. Handles other pending applications for the same pet
+   */
   const updateApplicationStatus = async (id: string, status: 'approved' | 'rejected') => {
     try {
       const application = state.applications.find(app => app.id === id);

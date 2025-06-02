@@ -6,19 +6,16 @@ import { ImageRequireSource } from 'react-native';
 export interface Pet {
   id: string;
   name: string;
-  species: string;
-  breed: string;
-  age: number;
-  description: string;
-  image: string;
-  createdAt: Date;
-  status: 'available' | 'pending' | 'adopted';
-  adoptedBy?: string; // ID of the user who adopted the pet
-  adoptedAt?: Date;
+  species: Species;
+  breed?: string;
+  age: string;
   gender: Gender;
   size?: PetSize;
   temperament?: Temperament[];
+  description: string;
   imageUrl: string | ImageRequireSource;
+  status: Status;
+  createdAt: Date;
   updatedAt?: Date;
 }
 //
@@ -26,9 +23,6 @@ export interface Application {
   id: string;
   petId: string;
   userId: string;
-  status: 'pending' | 'approved' | 'rejected';
-  applicationDate: string;
-  reviewedDate?: Date;
   petName: string;
   applicantName: string;
   applicantEmail: string;
@@ -41,6 +35,8 @@ export interface Application {
   hoursAlone: string;
   petExperience: string;
   whyAdopt: string;
+  applicationDate: string;
+  status: 'pending' | 'approved' | 'rejected';
 }
 
 export interface User {
